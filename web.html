@@ -1,91 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Download EXE Demo</title>
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 24px; }
-    button, a { display: inline-block; margin: 8px 0; padding: 10px 14px; border-radius: 6px; text-decoration: none; }
-    a { background:#2b6cb0; color:white; }
-    button { background:#4a5568; color:white; border:none; cursor:pointer; }
-    pre { background:#f7fafc; padding:12px; border-radius:6px; overflow:auto; }
-  </style>
+  <meta charset="utf-8">
+  <title>Download project.exe</title>
 </head>
 <body>
-  <h1>Download .exe — examples</h1>
-
-  <h3>1) Simple link (recommended when the file is public)</h3>
-  <!-- If the file is on the same domain you can often just use download -->
-  <a href="/files/mygame.exe" download="MyGame-Setup.exe">Download MyGame (direct link)</a>
-  <p>Browsers may ignore `download` for cross-origin URLs or when the server sets Content-Disposition. Use the server headers approach below if you need reliable behavior.</p>
-
-  <h3>2) Programmatic download with fetch (supports auth/CORS)</h3>
-  <button id="fetchDownloadBtn">Fetch & Download MyGame</button>
-  <div id="status" style="margin-top:8px;color:#333"></div>
-
-  <script>
-    const btn = document.getElementById('fetchDownloadBtn');
-    const status = document.getElementById('status');
-
-    btn.addEventListener('click', async () => {
-      status.textContent = 'Starting download...';
-      try {
-        // Replace with the actual URL where the exe is hosted.
-        // If this is cross-origin, server must allow CORS.
-        const url = '/files/mygame.exe';
-
-        // Optionally add credentials or headers:
-        // const resp = await fetch(url, { credentials: 'include', headers: { 'Authorization': 'Bearer ...' }});
-        const resp = await fetch(url);
-        if (!resp.ok) throw new Error(`Network error: ${resp.status} ${resp.statusText}`);
-
-        // You can show progress by reading the response body manually (advanced).
-        const blob = await resp.blob();
-
-        // Create a temporary object URL and trigger download
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-        a.href = objectUrl;
-
-        // Suggest a file name for the saved file
-        a.download = 'MyGame-Setup.exe';
-
-        // Trigger
-        document.body.appendChild(a);
-        a.click();
-
-        // Cleanup
-        URL.revokeObjectURL(objectUrl);
-        a.remove();
-
-        status.textContent = 'Download triggered — check your downloads folder.';
-      } catch (err) {
-        status.textContent = 'Download failed: ' + err.message;
-      }
-    });
-  </script>
-
-  <h3>3) Server-side: make sure the server sends the right headers</h3>
-  <p>For the browser to reliably treat the response as a downloadable file (and to suggest a filename), make sure the server sends:</p>
-  <pre>
-Content-Type: application/octet-stream
-Content-Disposition: attachment; filename="MyGame-Setup.exe"
-  </pre>
-  <p>Examples:</p>
-  <pre>
-# Express (Node.js)
-res.setHeader('Content-Type','application/octet-stream');
-res.setHeader('Content-Disposition','attachment; filename="MyGame-Setup.exe"');
-res.sendFile(pathToExe);
-
-# nginx location block
-add_header Content-Disposition 'attachment; filename="MyGame-Setup.exe"';
-  </pre>
-
-  <hr />
-  <small>
-    Notes: Browsers and security products may warn about `.exe` downloads. Always host .exe files over HTTPS, ensure the server sets CORS if needed, and make sure users trust and expect the download.
-  </small>
+  <h1>Download</h1>
+  <!-- If project.exe is in the same folder as this HTML file, this will prompt download. -->
+  <a href="project.exe" download="project.exe">Download project.exe</a>
 </body>
 </html>
